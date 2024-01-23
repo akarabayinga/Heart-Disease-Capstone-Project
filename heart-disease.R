@@ -1,4 +1,4 @@
-## ----setup, include = FALSE---------------------------------------------------------------------------------------------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------------------------------------------------------------------------------------------------
 
 # Load setup
 knitr::opts_chunk$set(
@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
   out.width = "95%")
 
 
-## ---- Custom theme, color palette, include = FALSE----------------------------------------------------------------------------------------------------------
+## ----Custom theme, color palette, include = FALSE-----------------------------------------------------------------------------------------------------------------------
 
 ###################################################################################
 # Create custom plot theme for all plots in the report
@@ -46,17 +46,7 @@ theme_1 <- function() {
 }
 
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------
-# Clinical variables: age, sex, chest pain type, systolic BP
-# 
-# Routine test data: serum cholesterol, fbs > 120, electrocardiographic results at rest(normal, St-T wave abnormality, probable or definite LVH by Estes
-# 
-# Non-invasive tests: Exercise electrocardiogram
-# 
-# Exercise data: maximal HR, exercised induced angina, slope of the peak ex-induced St-segment depression (where 1 mm = 0.1 mV)
-
-
-## ---- Download data set, include = FALSE--------------------------------------------------------------------------------------------------------------------
+## ----Download data set, include = FALSE---------------------------------------------------------------------------------------------------------------------------------
 
 # Install required packages
 if (!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
@@ -97,7 +87,7 @@ heart <- read_csv("heart.csv")
 colnames(heart) <- tolower(colnames(heart))
 
 
-## ---- overview----------------------------------------------------------------------------------------------------------------------------------------------
+## ----overview-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing classes and the first 10 observations
 rbind(
@@ -117,7 +107,7 @@ rbind(
   pack_rows("First 10 observations", 2, 11)
 
 
-## ---- formating---------------------------------------------------------------------------------------------------------------------------------------------
+## ----formating----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Convert fastingbs and heartdisease to class factor
 heart <- heart %>%
@@ -153,7 +143,7 @@ heart$heartdisease <- factor(heart$heartdisease,
 heart$heartdisease <- ordered(heart$heartdisease, levels = c("Present", "Absent"))
 
 
-## ---- data-structure----------------------------------------------------------------------------------------------------------------------------------------
+## ----data-structure-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing variablee, types, classes and levels if available
 tibble(
@@ -233,7 +223,7 @@ tibble(
   column_spec(4, width = "30em")
 
 
-## ---- missing-values, fig.show = 'hide'---------------------------------------------------------------------------------------------------------------------
+## ----missing-values, fig.show = 'hide'----------------------------------------------------------------------------------------------------------------------------------
 
 # Check whether hearthas any missing values
 gg_miss_var(heart) +
@@ -245,7 +235,7 @@ gg_miss_var(heart) +
   )
 
 
-## ---- create model and validation sets----------------------------------------------------------------------------------------------------------------------
+## ----create model and validation sets-----------------------------------------------------------------------------------------------------------------------------------
 
 library(tidymodels)
 
@@ -265,12 +255,12 @@ model <- training(heart_split)
 validation <- testing(heart_split)
 
 
-## ---- data-figure, fig.cap = "Data set partitions", out.width = "80%"---------------------------------------------------------------------------------------
+## ----data-figure, fig.cap = "Data set partitions", out.width = "80%"----------------------------------------------------------------------------------------------------
 
 knitr::include_graphics("data_allocation.png")
 
 
-## ---- data-sets-overview------------------------------------------------------------------------------------------------------------------------------------
+## ----data-sets-overview-------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing number of observations and proportions with and without heart disease for data sets from data partitioning I.
 tibble(
@@ -330,7 +320,7 @@ tibble(
   row_spec(0, bold = TRUE)
 
 
-## ---- heartdisease-summary----------------------------------------------------------------------------------------------------------------------------------
+## ----heartdisease-summary-----------------------------------------------------------------------------------------------------------------------------------------------
 
 # Number and percentage of patients with ('present') and without ('absent') heart disease
 present_n <- model %>%
@@ -354,7 +344,7 @@ absent_perc <- round(
 )
 
 
-## ---- heartdisease, fig.cap = "Distribution of HD status", fig.height = 2.5, fig.width = 4------------------------------------------------------------------
+## ----heartdisease, fig.cap = "Distribution of HD status", fig.height = 2.5, fig.width = 4-------------------------------------------------------------------------------
 
 # Compare number of patients with and without heart disease
 model %>%
@@ -395,7 +385,7 @@ model %>%
   theme_1()
 
 
-## ---- descriptive-statistics--------------------------------------------------------------------------------------------------------------------------------
+## ----descriptive-statistics---------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table of descriptive statistics for all variables stratified by HD
 
@@ -532,7 +522,7 @@ tab %>%
   pack_rows("Continuous variables", 24, 38)
 
 
-## ---- improbable-values-------------------------------------------------------------------------------------------------------------------------------------
+## ----improbable-values--------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Number and percentage of patients in model data set with resting BP  of 0
 zero_restingbp_n <- model %>%
@@ -565,7 +555,7 @@ zero_oldpeak_perc <- round(
 )
 
 
-## ---- knn-imputation----------------------------------------------------------------------------------------------------------------------------------------
+## ----knn-imputation-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Perform knn-imputation for resting BP and cholesterol levels of 0 and oldpeak values < 0
 
@@ -595,7 +585,7 @@ model_imputed <- recipe_impute %>%
   juice()
 
 
-## ---- imputation-plots, fig.cap = "Scatter plots of cholesterol, resting BP and oldpeak values before and after kNN-imputation of the model data set", fig.height = 5, fig.width = 7----
+## ----imputation-plots, fig.cap = "Scatter plots of cholesterol, resting BP and oldpeak values before and after kNN-imputation of the model data set", fig.height = 5, fig.width = 7----
 
 # cholesterol
 chol <- cbind(
@@ -693,7 +683,7 @@ grid.arrange(
 )
 
 
-## ---- descriptive-statistics2-------------------------------------------------------------------------------------------------------------------------------
+## ----descriptive-statistics2--------------------------------------------------------------------------------------------------------------------------------------------
 
 # Descriptive statistics for the 3 variables modified using kNN-imputation
 # Re-label all variables
@@ -738,13 +728,13 @@ tab1 %>%
   row_spec(0:1, bold = TRUE)
 
 
-## -----------------------------------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Rename knn-imputed model set as model
 model <- model_imputed
 
 
-## ---- sex-summary-------------------------------------------------------------------------------------------------------------------------------------------
+## ----sex-summary--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Sex counts
 sex_n <- table(model$sex)
@@ -761,7 +751,7 @@ sex_hd_prop <- sex_hd_n %>%
   proportions(2) * 100
 
 
-## ---- sex-HD------------------------------------------------------------------------------------------------------------------------------------------------
+## ----sex-HD-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distribution of heart disease by sex
 sex_HD <- sex_hd_prop %>%
@@ -801,7 +791,7 @@ sex_HD <- sex_hd_prop %>%
   theme_1()
 
 
-## ---- cpt-summary-------------------------------------------------------------------------------------------------------------------------------------------
+## ----cpt-summary--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Counts per chestpaintype
 cpt_n <- table(model$chestpaintype)
@@ -818,7 +808,7 @@ cpt_hd_prop <- cpt_hd_n %>%
   proportions(2) * 100
 
 
-## ---- sex-cpt-HD, fig.cap= "Sex and chest pain type by HD status", fig.height = 3, fig.width = 8------------------------------------------------------------
+## ----sex-cpt-HD, fig.cap= "Sex and chest pain type by HD status", fig.height = 3, fig.width = 8-------------------------------------------------------------------------
 
 # Distribution of heart disease by chestpaintype
 cpt_HD <- cpt_hd_prop %>%
@@ -894,7 +884,7 @@ grid.arrange(
 )
 
 
-## ---- FBS-classification------------------------------------------------------------------------------------------------------------------------------------
+## ----FBS-classification-------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing classification of fasting BS
 tibble(
@@ -930,7 +920,7 @@ tibble(
   row_spec(0, bold = TRUE)
 
 
-## ---- fastingbs-summary-------------------------------------------------------------------------------------------------------------------------------------
+## ----fastingbs-summary--------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Fastingbs counts
 fbs_n <- table(model$fastingbs)
@@ -947,7 +937,7 @@ fbs_hd_prop <- fbs_hd_n %>%
   proportions(2) * 100
 
 
-## ---- FBS-HD------------------------------------------------------------------------------------------------------------------------------------------------
+## ----FBS-HD-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distribution of heart disease by fastingbs
 FBS_HD <- fbs_hd_prop %>%
@@ -993,7 +983,7 @@ FBS_HD <- fbs_hd_prop %>%
   theme_1()
 
 
-## ---- restingecg-summary------------------------------------------------------------------------------------------------------------------------------------
+## ----restingecg-summary-------------------------------------------------------------------------------------------------------------------------------------------------
 
 # restingecg counts
 restingecg_n <- table(model$restingecg)
@@ -1010,7 +1000,7 @@ restingecg_hd_prop <- restingecg_hd_n %>%
   proportions(2) * 100
 
 
-## ---- FBS-restECG-HD, fig.cap= "Fasting blood sugar and resting ECG by HD status",  fig.height = 3, fig.width = 8-------------------------------------------
+## ----FBS-restECG-HD, fig.cap= "Fasting blood sugar and resting ECG by HD status",  fig.height = 3, fig.width = 8--------------------------------------------------------
 
 # Distribution of restingecg heart disease
 restECG_HD <- restingecg_hd_prop %>%
@@ -1081,7 +1071,7 @@ grid.arrange(
 )
 
 
-## ---- exerciseangina-summary--------------------------------------------------------------------------------------------------------------------------------
+## ----exerciseangina-summary---------------------------------------------------------------------------------------------------------------------------------------------
 
 # exerciseangina  counts
 exang_n <- table(model$exerciseangina)
@@ -1098,7 +1088,7 @@ exang_hd_prop <- exang_hd_n %>%
   proportions(2) * 100
 
 
-## ---- exang-HD----------------------------------------------------------------------------------------------------------------------------------------------
+## ----exang-HD-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distribution of heart disease by exerciseangina
 exang_HD <- exang_hd_prop %>%
@@ -1138,7 +1128,7 @@ exang_HD <- exang_hd_prop %>%
   theme_1()
 
 
-## ---- st_slope-summary--------------------------------------------------------------------------------------------------------------------------------------
+## ----st_slope-summary---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # st_slope  counts
 stslope_n <- table(model$st_slope)
@@ -1155,7 +1145,7 @@ stslope_hd_prop <- stslope_hd_n %>%
   proportions(2) * 100
 
 
-## ---- exang-ST-HD, fig.cap = "Exercise-induced angina and ST-segment slope by HD status", fig.height = 3, fig.width = 8-------------------------------------
+## ----exang-ST-HD, fig.cap = "Exercise-induced angina and ST-segment slope by HD status", fig.height = 3, fig.width = 8--------------------------------------------------
 
 # Distribution of heart disease by st_slope
 ST_HD <- stslope_hd_prop %>%
@@ -1226,7 +1216,7 @@ grid.arrange(
 )
 
 
-## ---- age-summary-------------------------------------------------------------------------------------------------------------------------------------------
+## ----age-summary--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Compute age summary by HD
 summ_age_HD <- model %>%
@@ -1240,7 +1230,7 @@ summ_age_HD <- model %>%
   )
 
 
-## ---- age-HD------------------------------------------------------------------------------------------------------------------------------------------------
+## ----age-HD-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Boxplots of age by HD
 age_HD <- model %>%
@@ -1260,7 +1250,7 @@ age_HD <- model %>%
   theme_1()
 
 
-## ---- BP-classification-------------------------------------------------------------------------------------------------------------------------------------
+## ----BP-classification--------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing classification of BP
 tibble(
@@ -1306,7 +1296,7 @@ tibble(
   row_spec(0, bold = TRUE)
 
 
-## ---- restingbp-summary-------------------------------------------------------------------------------------------------------------------------------------
+## ----restingbp-summary--------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Compute restingBP summary by HD
 summ_rbp_HD <- model %>%
@@ -1320,7 +1310,7 @@ summ_rbp_HD <- model %>%
   )
 
 
-## ---- age-restingbp-HD, fig.cap = "Distribution of age and resting BP by HD status", fig.height = 2.5, fig.width = 8----------------------------------------
+## ----age-restingbp-HD, fig.cap = "Distribution of age and resting BP by HD status", fig.height = 2.5, fig.width = 8-----------------------------------------------------
 
 # Boxplots of restingbp by HD
 restBP_HD <- model %>%
@@ -1353,7 +1343,7 @@ grid.arrange(
 )
 
 
-## ---- cholesterol-summary-----------------------------------------------------------------------------------------------------------------------------------
+## ----cholesterol-summary------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Compute cholesterol summary by HD
 summ_chol_HD <- model %>%
@@ -1367,7 +1357,7 @@ summ_chol_HD <- model %>%
   )
 
 
-## ---- optimal-cholesterol-----------------------------------------------------------------------------------------------------------------------------------
+## ----optimal-cholesterol------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create table showing optimal cholesterol levels
 tibble(
@@ -1399,7 +1389,7 @@ tibble(
   row_spec(0, bold = TRUE)
 
 
-## ---- cholesterol-HD----------------------------------------------------------------------------------------------------------------------------------------
+## ----cholesterol-HD-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Boxplots of cholesterol by HD
 chol_HD <- model %>%
@@ -1419,7 +1409,7 @@ chol_HD <- model %>%
   theme_1()
 
 
-## ---- maxhr-summary-----------------------------------------------------------------------------------------------------------------------------------------
+## ----maxhr-summary------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create a summary table for maxhr by HD
 summ_maxhr_HD <- model %>%
@@ -1433,7 +1423,7 @@ summ_maxhr_HD <- model %>%
   )
 
 
-## ---- chol-maxhr-HD, fig.cap = "Distribution of serum cholesterol and maximum HR by HD status", fig.height = 2.5, fig.width = 8-----------------------------
+## ----chol-maxhr-HD, fig.cap = "Distribution of serum cholesterol and maximum HR by HD status", fig.height = 2.5, fig.width = 8------------------------------------------
 
 # Boxplots of age by HD
 maxhr_HD <- model %>%
@@ -1466,7 +1456,7 @@ grid.arrange(
 )
 
 
-## ---- oldpeak-summary---------------------------------------------------------------------------------------------------------------------------------------
+## ----oldpeak-summary----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create a summary table for oldpeak by HD
 summ_oldpeak_HD <- model %>%
@@ -1480,7 +1470,7 @@ summ_oldpeak_HD <- model %>%
   )
 
 
-## ---- oldpeak-HD, fig.cap = "Distribution of ST depression induced by exercise (oldpeak) by HD status", fig.height = 2.5, fig.width = 4---------------------
+## ----oldpeak-HD, fig.cap = "Distribution of ST depression induced by exercise (oldpeak) by HD status", fig.height = 2.5, fig.width = 4----------------------------------
 
 # Boxplots of age by HD
 model %>%
@@ -1499,7 +1489,7 @@ model %>%
   theme_1()
 
 
-## ---- Create train and test sets----------------------------------------------------------------------------------------------------------------------------
+## ----Create train and test sets-----------------------------------------------------------------------------------------------------------------------------------------
 
 # Create train (90% of model) and test (10% of model) sets
 # Set seed to allow reproducibility
@@ -1517,7 +1507,7 @@ train <- training(model_split)
 test <- testing(model_split)
 
 
-## ---- 10-fold cross-validation------------------------------------------------------------------------------------------------------------------------------
+## ----10-fold cross-validation-------------------------------------------------------------------------------------------------------------------------------------------
 
 # Set seed to ensure reproducibility
 set.seed(2000, sample.kind = "Rounding")
@@ -1529,7 +1519,7 @@ train_cv <- vfold_cv(train,
 )
 
 
-## ---- rf-recipe---------------------------------------------------------------------------------------------------------------------------------------------
+## ----rf-recipe----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create a recipe for RF pre-processing
 rf_recipe <- recipe(
@@ -1540,7 +1530,7 @@ rf_recipe <- recipe(
 rf_recipe
 
 
-## ---- rf-model----------------------------------------------------------------------------------------------------------------------------------------------
+## ----rf-model-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Define random forest model
 rf_model <- rand_forest(
@@ -1561,7 +1551,7 @@ rf_model <- rand_forest(
 rf_model
 
 
-## ---- rf-workflow-------------------------------------------------------------------------------------------------------------------------------------------
+## ----rf-workflow--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create rf_workflow to aggregate all info to fit the model & generate predictions
 
@@ -1574,7 +1564,7 @@ rf_workflow <- workflow() %>%
 rf_workflow
 
 
-## ---- rf-hyper-parameter-tuning-----------------------------------------------------------------------------------------------------------------------------
+## ----rf-hyper-parameter-tuning------------------------------------------------------------------------------------------------------------------------------------------
 
 # set seed for reproducibility
 set.seed(2000)
@@ -1593,7 +1583,7 @@ best_rf_acc <- rf_params %>%
   round(digits = 3)
 
 
-## ---- best-rf-model-----------------------------------------------------------------------------------------------------------------------------------------
+## ----best-rf-model------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Select RF hyper-parameters with the highest accuracy
 best_rf_params <- rf_params %>%
@@ -1606,7 +1596,7 @@ rf_workflow <- rf_workflow %>%
 rf_workflow
 
 
-## ---- rf-last-fit-------------------------------------------------------------------------------------------------------------------------------------------
+## ----rf-last-fit--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Fit best rf model on train set and evaluate on test set
 rf_last_fit <- rf_workflow %>%
@@ -1616,7 +1606,7 @@ rf_last_fit <- rf_workflow %>%
   )
 
 
-## ---- knn_recipe--------------------------------------------------------------------------------------------------------------------------------------------
+## ----knn_recipe---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create a recipe for knn pre-processing
 knn_recipe <- recipe(
@@ -1633,7 +1623,7 @@ knn_recipe <- recipe(
 knn_recipe
 
 
-## ---- knn-model---------------------------------------------------------------------------------------------------------------------------------------------
+## ----knn-model----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Define knn model
 knn_model <- nearest_neighbor(
@@ -1648,7 +1638,7 @@ knn_model <- nearest_neighbor(
 knn_model
 
 
-## ---- knn-workflow------------------------------------------------------------------------------------------------------------------------------------------
+## ----knn-workflow-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Create knn_workflow to aggregate all info to fit the model & make predictions
 knn_workflow <- workflow() %>%
@@ -1660,7 +1650,7 @@ knn_workflow <- workflow() %>%
 knn_workflow
 
 
-## ---- knn-hyper-parameter-tuning----------------------------------------------------------------------------------------------------------------------------
+## ----knn-hyper-parameter-tuning-----------------------------------------------------------------------------------------------------------------------------------------
 
 # set seed for reproducibility
 set.seed(2000)
@@ -1679,7 +1669,7 @@ best_knn_acc <- knn_params %>%
   round(digits = 3)
 
 
-## ---- best-knn-model----------------------------------------------------------------------------------------------------------------------------------------
+## ----best-knn-model-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Select knn hyper-parameter with the highest accuracy
 best_knn_params <- knn_params %>%
@@ -1692,7 +1682,7 @@ knn_workflow <- knn_workflow %>%
 knn_workflow
 
 
-## ---- knn-last-fit------------------------------------------------------------------------------------------------------------------------------------------
+## ----knn-last-fit-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Fit best knn model on train set and evaluate on test set
 knn_last_fit <- knn_workflow %>%
@@ -1702,7 +1692,7 @@ knn_last_fit <- knn_workflow %>%
   )
 
 
-## ---- best-model-metrics------------------------------------------------------------------------------------------------------------------------------------
+## ----best-model-metrics-------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Extract performance metrics for best rf model
 rf_last_fit_metrics <- rf_last_fit %>%
@@ -1723,7 +1713,7 @@ knn_last_fit_pred <- knn_last_fit %>%
   collect_predictions()
 
 
-## ---- lastfit-confusion-matrix, fig.cap = "Confusion matrix heatmaps for A) RF and b) kNN last fit models", fig.height = 3----------------------------------
+## ----lastfit-confusion-matrix, fig.cap = "Confusion matrix heatmaps for A) RF and b) kNN last fit models", fig.height = 3-----------------------------------------------
 
 # Create and plot confusion matrices for RF and knn last fit
 
@@ -1775,7 +1765,7 @@ grid.arrange(
 )
 
 
-## ---- best-model-performance, fig.cap = "Performance metrics for RF and kNN last fit models", fig.height = 2.5, fig.width = 4-------------------------------
+## ----best-model-performance, fig.cap = "Performance metrics for RF and kNN last fit models", fig.height = 2.5, fig.width = 4--------------------------------------------
 
 # Plot and compare performance metrics
 comb_metrics <- rbind(
@@ -1807,7 +1797,7 @@ comb_metrics %>%
   theme_1()
 
 
-## ---- fin-algorithm-performance, fig.cap = "Final kNN model results - trained on entire model data set and evaluated on validation data set", fig.height = 3----
+## ----fin-algorithm-performance, fig.cap = "Final kNN model results - trained on entire model data set and evaluated on validation data set", fig.height = 3-------------
 
 # Train knn model on model set and evaluate on validation set
 fin_alg <- knn_workflow %>%
