@@ -1931,7 +1931,7 @@ rf_last_fit <- rf_workflow %>%
 
 #### k-Nearest Neighbour
 
-kNN is a simple, effective and commonly used ML algorithm. It allows classification of observations in a data set by comparing their attributes to attributes of "similar" labeled observations in the same data set [@bramer2013introduction] <!--# Modify sentence and the next -->. The number of known observations to be used, *k*, needs to be set prior to training the model.
+kNN is a simple, effective and commonly used ML algorithm. It allows classification of observations in a data set by comparing their attributes to attributes of "similar" labeled observations in the same data set [@bramer2013introduction]. The number of known observations to be used, *k*, needs to be set prior to training the model.
 
 kNN's advantages include:
 
