@@ -70,7 +70,7 @@ theme_1 <- function() {
 
 ## Cardiovascular and Heart Disease
 
-Cardiovascular disease (CVD)[^1] is a term for all types of diseases affecting the heart or blood vessels, including coronary heart disease, stroke, congenital heart defects and peripheral artery disease [@NHLBI]. All heart diseases (HDs) are CVDs but not all CVDs are HDs. According to the World Health Organisation (WHO), CVDs are the leading cause of morbidity and mortality worldwide [@world2021cardiovascular]. In 2019, approximately 17.9 million people (32% of worldwide deaths) died from CVDs. Over 75% of these deaths occur in low- and middle-income countries, where there is inadequate access to effective and affordable primary health care that prevents early and accurate detection, diagnosis and timely intervention [@world2021cardiovascular]. <!--# Comment on why ML-related means to detect can be helpful given poor health care, most of predictors still need access to hospital to collect them. Do the 5 top most predictors only used increase accuracy -->
+Cardiovascular disease (CVD)[^1] is a term for all types of diseases affecting the heart or blood vessels, including coronary heart disease, stroke, congenital heart defects and peripheral artery disease [@NHLBI]. All heart diseases (HDs) are CVDs but not all CVDs are HDs. According to the World Health Organisation (WHO), CVDs are the leading cause of morbidity and mortality worldwide [@world2021cardiovascular]. In 2019, approximately 17.9 million people (32% of worldwide deaths) died from CVDs. Over 75% of these deaths occur in low- and middle-income countries, where there is inadequate access to effective and affordable primary health care that prevents early and accurate detection, diagnosis and timely intervention [@world2021cardiovascular].
 
 [^1]: According to the [National Heart, Lung and Blood Institute](@https://www.nhlbi.nih.gov/sites/default/files/media/docs/Fact_Sheet_Know_Diff_Design.508_pdf.pdf) (NHLBI), the terms 'cardiovascular disease (CVD)', 'heart disease (HD)' and ' coronary heart disease' are often used interchangeably [@NHLBI]. The NHLBI, defines them as follows:
 
@@ -82,7 +82,7 @@ Preventable risk factors for HDs and stroke include poor diet, lack of physical 
 
 ### Machine Learning and Diagnosis of CVD
 
-Machine learning (ML), a scientific discipline which uses computer algorithms that learn and adapt, can be exploited to diagnose a number of medical disorders [@sajda2006machine; @deo2015machine]<!--# Make sure these are in a pair of brackets) -->. ML approaches include *supervised learning*, which entails using labeled data to train algorithms to classify data or predict outcomes, and *unsupervised learning*, which aims to identify naturally occurring patterns and trends or clusters data into groups using unlabelled data [@deo2015machine].
+Machine learning (ML), a scientific discipline which uses computer algorithms that learn and adapt, can be exploited to diagnose a number of medical disorders [@sajda2006machine; @deo2015machine]. ML approaches include *supervised learning*, which entails using labeled data to train algorithms to classify data or predict outcomes, and *unsupervised learning*, which aims to identify naturally occurring patterns and trends or clusters data into groups using unlabelled data [@deo2015machine].
 
 In the context of disease diagnosis, supervised learning entails training algorithms using data for which the disease status of patients is known and applying the trained algorithm to make predictions regarding the disease status of patients whose disease status is unknown [@akella2021machine].
 
@@ -107,7 +107,7 @@ Combined, these data sets resulted in a total of 1190 observations. The creator 
 
     i.  *HeartDisease*: output class (1: heart disease, 0: normal)
 
--   [Predictor variables]{.underline}: <!--# Add ranges of numeric variables? -->
+-   [Predictor variables]{.underline}:
 
     i.  *Age*: age of patient (years)
     ii. *Sex*: sex of the patient
@@ -146,15 +146,7 @@ Combined, these data sets resulted in a total of 1190 observations. The creator 
 
         -   Down: downsloping
 
-```{r}
-# Clinical variables: age, sex, chest pain type, systolic BP
-# 
-# Routine test data: serum cholesterol, fbs > 120, electrocardiographic results at rest(normal, St-T wave abnormality, probable or definite LVH by Estes
-# 
-# Non-invasive tests: Exercise electrocardiogram
-# 
-# Exercise data: maximal HR, exercised induced angina, slope of the peak ex-induced St-segment depression (where 1 mm = 0.1 mV)
-```
+
 
 ## Capstone Project
 
@@ -541,7 +533,7 @@ model %>%
   theme_1()
 ```
 
-Table \@ref(tab:descriptive-statistics) shows the descriptive statistics of all predictor variables stratified by HD status. HD appears to be associated with <!--# For Dimples: This is the overview based on the descriptive stats table, the insights gained is following deeper EDA-->:
+Table \@ref(tab:descriptive-statistics) shows the descriptive statistics of all predictor variables stratified by HD status. HD appears to be associated with:
 
 -   male gender,
 -   asymptomatic chest pain,
@@ -912,8 +904,6 @@ model <- model_imputed
 ### Predictor Variables - Categorical
 
 #### Sex
-
-<!--# For graphs, order from lowest HD present percent to highest; check that x-axis labels are visible-->
 
 ```{r, sex-summary}
 
@@ -1946,7 +1936,7 @@ kNN is a simple, effective and commonly used ML algorithm. It allows classificat
 kNN's advantages include:
 
 -   Ease of implementation, with only one main hyper-parameter, i.e., *k*, required to implement it
--   Speed: it is faster than other algorithms as it does not require a training period <!--# modify -->.
+-   Speed: it is faster than other algorithms as it does not require a training period.
 
 kNN's disadvantages include:
 
