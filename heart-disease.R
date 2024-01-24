@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
   out.width = "95%")
 
 
-## ----Custom theme, color palette, include = FALSE-----------------------------------------------------------------------------------------------------------------------
+## ----Custom theme, include = FALSE--------------------------------------------------------------------------------------------------------------------------------------
 
 ###################################################################################
 # Create custom plot theme for all plots in the report
@@ -46,7 +46,7 @@ theme_1 <- function() {
 }
 
 
-## ----Download data set, include = FALSE---------------------------------------------------------------------------------------------------------------------------------
+## ----Load packages & data set, include = FALSE--------------------------------------------------------------------------------------------------------------------------
 
 # Install required packages
 if (!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
@@ -145,7 +145,7 @@ heart$heartdisease <- ordered(heart$heartdisease, levels = c("Present", "Absent"
 
 ## ----data-structure-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Create table showing variablee, types, classes and levels if available
+# Create table showing variable labels, description, classes and levels if available
 tibble(
   variable_label = c(
     "heartdisease",
@@ -225,7 +225,7 @@ tibble(
 
 ## ----missing-values, fig.show = 'hide'----------------------------------------------------------------------------------------------------------------------------------
 
-# Check whether hearthas any missing values
+# Check whether heart data set has missing values
 gg_miss_var(heart) +
   theme_1() +
   labs(
@@ -243,7 +243,7 @@ library(tidymodels)
 # Set seed to allow reproducibility
 set.seed(2000, sample.kind = "Rounding")
 
-# Create an object contain the 90-10 split for model_new
+# Create an object contain the 90-10 split for heart data set
 heart_split <- heart %>%
   initial_split(
     prop = 0.9,
@@ -572,14 +572,14 @@ recipe_impute <- recipe(
   data = model1,
   heartdisease ~ .
 ) %>%
-  # impute cholesterol values using knn-imputation
+  # impute cholesterol, restingbp and oldpeak values using knn-imputation
   step_impute_knn(
     cholesterol,
     restingbp,
     oldpeak
   )
 
-# Visualize imputed data
+# Create table of imputed data
 model_imputed <- recipe_impute %>%
   prep(model1) %>%
   juice()
@@ -739,13 +739,13 @@ model <- model_imputed
 # Sex counts
 sex_n <- table(model$sex)
 
-# Compute sex counts per HD category
+# Compute sex counts per HD status
 sex_hd_n <- table(
   model$heartdisease,
   model$sex
 )
 
-# Compute proportions of sex with HD
+# Compute proportions of sex by HD status
 sex_hd_prop <- sex_hd_n %>%
   # convert to percent
   proportions(2) * 100
@@ -793,16 +793,16 @@ sex_HD <- sex_hd_prop %>%
 
 ## ----cpt-summary--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Counts per chestpaintype
+# chestpaintype counts
 cpt_n <- table(model$chestpaintype)
 
-# Compute chestpaintype counts per HD category
+# Compute chestpaintype counts per HD status
 cpt_hd_n <- table(
   model$heartdisease,
   model$chestpaintype
 )
 
-# Compute proportions of chestpaintype with HD
+# Compute proportions of chestpaintype by HD status
 cpt_hd_prop <- cpt_hd_n %>%
   # convert to percent
   proportions(2) * 100
@@ -922,16 +922,16 @@ tibble(
 
 ## ----fastingbs-summary--------------------------------------------------------------------------------------------------------------------------------------------------
 
-# Fastingbs counts
+# fastingbs counts
 fbs_n <- table(model$fastingbs)
 
-# Compute fastingbs counts per HD category
+# Compute fastingbs counts per HD status
 fbs_hd_n <- table(
   model$heartdisease,
   model$fastingbs
 )
 
-# Compute proportions of fastingbs with HD
+# Compute proportions of fastingbs by HD status
 fbs_hd_prop <- fbs_hd_n %>%
   # convert to percent
   proportions(2) * 100
@@ -988,13 +988,13 @@ FBS_HD <- fbs_hd_prop %>%
 # restingecg counts
 restingecg_n <- table(model$restingecg)
 
-# Compute fastingbs counts per HD category
+# Compute restingecg counts per HD status
 restingecg_hd_n <- table(
   model$heartdisease,
   model$restingecg
 )
 
-# Compute proportions of restingecg with HD
+# Compute proportions of restingecg by HD status
 restingecg_hd_prop <- restingecg_hd_n %>%
   # convert to percent
   proportions(2) * 100
@@ -1076,7 +1076,7 @@ grid.arrange(
 # exerciseangina  counts
 exang_n <- table(model$exerciseangina)
 
-# Compute exerciseangina counts per HD category
+# Compute exerciseangina counts per HD status
 exang_hd_n <- table(
   model$heartdisease,
   model$exerciseangina
@@ -1133,13 +1133,13 @@ exang_HD <- exang_hd_prop %>%
 # st_slope  counts
 stslope_n <- table(model$st_slope)
 
-# Compute st_slope counts per HD category
+# Compute st_slope counts per HD status
 stslope_hd_n <- table(
   model$heartdisease,
   model$st_slope
 )
 
-# Compute proportions of exerciseangina with HD
+# Compute proportions of st_slope by HD status
 stslope_hd_prop <- stslope_hd_n %>%
   # convert to percent
   proportions(2) * 100
